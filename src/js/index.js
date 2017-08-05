@@ -1,23 +1,14 @@
-import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
+import React from 'react';
+import ReactDom from 'react-dom';
+import { browserHistory } from 'react-router';
+import { syncHistoryWithStore } from 'react-router-redux';
+import Root from './containers/Root';
+import configureStore from './store/configureStore';
 
-// copy from https://facebook.github.io/react/tutorial/tutorial.html
-class ShoppingList extends Component {
-    render() {
-        return (
-            <div className="shopping-list">
-            <h1>Shopping List for {this.props.name}</h1>
-                <ul>
-                    <li>Instagram</li>
-                    <li>WhatsApp</li>
-                    <li>Oculus</li>
-                </ul>
-            </div>
-        );
-    }
-}
+const store = configureStore();
+const history = syncHistoryWithStore(browserHistory, store);
 
-ReactDOM.render(
-    <ShoppingList name='daikon' />,
-    document.getElementById('main')
+ReactDom.render(
+  <Root store={store} history={history} />,
+  document.getElementById('main')
 );

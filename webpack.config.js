@@ -1,8 +1,9 @@
 var path = require('path');
+const webpack = require('webpack');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
-    entry: './src/js/index.js',
+    entry: ['babel-polyfill', './src/js/index.js'],
     output: {
         filename: 'bundle.js',
         path: path.resolve(__dirname, 'dist')
@@ -11,16 +12,15 @@ module.exports = {
     module: {
         rules: [
             {
+              test: /\.js$/,
+              exclude: [/node_modules/],
+              enforce: 'pre',
+              use: ['eslint-loader']
+            },
+            {
                 test: /\.js$/,
-                loader: 'buble-loader',
+                loader: 'babel-loader',
                 exclude: [/node_modules/],
-                options: {
-                    objectAssign: 'Object.assign',
-                    transforms: {
-                        modules: false,
-                        dangerousForOf: true
-                    }
-                }
             },
             {
                 test: /\.json$/,
@@ -32,6 +32,15 @@ module.exports = {
     plugins: [
         new CopyWebpackPlugin([
             {from: 'src/index.html', to: './'}
-        ])
+        ]),
+      new webpack.LoaderOptionsPlugin({
+        test: /\.js$/,
+        options: {
+          eslint: {
+            configFile: './.eslintrc',
+            cache: false
+          }
+        }
+      })
     ]
 };
