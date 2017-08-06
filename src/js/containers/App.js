@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
 import { resetErrorMessage } from '../actions';
+import Map from '../components/Map';
 
 class App extends Component {
   static propTypes = {
@@ -44,7 +45,7 @@ class App extends Component {
     const { children } = this.props;
     return (
       <div>
-        AHO
+        <Map />
       <hr />
         {this.renderErrorMessage()}
         {children}
